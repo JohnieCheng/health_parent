@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.dao.OrderSettingDao">
+
+    <update id="editNumberByOrderDate" parameterType="com.itheima.pojo.OrderSetting">
+        update t_ordersetting
+        set number = #{number}
+        where orderDate = #{orderDate}
+    </update>
+
+    <select id="findCountByOrderDate" parameterType="java.util.Date" resultType="long">
+        select count(*)
+        from t_ordersetting
+        where orderDate = #{orderDate}
+    </select>
+
+    <insert id="add" parameterType="com.itheima.pojo.OrderSetting">
+        insert into t_ordersetting (orderDate, number, reservations)
+        values (#{orderDate}, #{number}, #{reservations})
+    </insert>
+
+    <select id="getOrderSettingByMonth"
+            parameterType="hashmap"
+            resultType="com.itheima.pojo.OrderSetting">
+        select *
+        from t_ordersetting
+        where orderDate between #{dateBegin} and #{dateEnd}
+    </select>
+
+    <!--根据日期查询预约设置信息-->
+    <select id="findByOrderDate" parameterType="date" resultType="com.itheima.pojo.OrderSetting">
+        select * from t_ordersetting where orderDate = #{orderDate}
+    </select>
+
+    <!--更新已预约人数-->
+    <update id="editReservationsByOrderDate" parameterType="com.itheima.pojo.OrderSetting">
+        update t_ordersetting set reservations = #{reservations} where orderDate = #{orderDate}
+    </update>
+    <!--分页查询-->
+    <select id="selectByCondition" parameterType="String" resultType="map">
+        select
+            o.orderDate,o.orderType,o.orderStatus,m.name,m.phoneNumber,o.id
+        from
+            t_member m,t_order o
+            where
+            m.id=o.member_id
+        <if test="value != null and value.length>0">
+            and
+            name =#{value} or phoneNumber = #{value}
+        </if>
+    </select>
+
+    <!--根据手机号，或者身份证号查询memberId-->
+    <select id="findIdByNumberOrIdCard" parameterType="map" resultType="int">
+        select
+        m.id
+        from
+        t_member m
+        where
+        m.phoneNumber = #{phoneNumber} or m.idCard = #{idCard}
+    </select>
+    <!--添加信息到Order表-->
+    <insert id="addOrder" parameterType="map" >
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_order(member_id,orderDate,orderType,orderStatus,setmeal_id)
+        values (#{member_id},#{orderDate},'微信预约','未到诊',#{setmeal_id})
+    </insert>
+    <!--删除预约-->
+    <delete id="deleteById" parameterType="int">
+        delete from t_order where id = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>传智健康</title>
+    <meta name="description" content="传智健康">
+    <meta name="keywords" content="传智健康">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../plugins/elementui/index.css">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .el-main {
+            position: absolute;
+            top: 55px;
+            bottom: 0px;
+            left: 10px;
+            right: 10px;
+            padding: 0;
+            text-align: center;
+            line-height: 160px;
+        }
+
+        .el-header {
+            position: absolute;
+            color: #333;
+            line-height: 50px;
+            left: 0px;
+            right: 0px;
+        }
+    </style>
+    <!-- 引入组件库 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script src="../js/vue.js"></script>
+    <script src="../plugins/elementui/index.js"></script>
+    <script src="../js/axios-0.18.0.js"></script>
+</head>
+<body>
+<div id="app">
+    <el-container>
+        <el-header class="el-header">
+            <template>
+                <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+                    <el-tab-pane label="会员折线图" name="first">会员折线图</el-tab-pane>
+                    <el-tab-pane label="套餐预约占比饼形图" name="second">套餐预约占比饼形图</el-tab-pane>
+                    <el-tab-pane label="运营数据统计" name="third">运营数据统计</el-tab-pane>
+                    <el-tab-pane label="待添加" name="fourth">待添加</el-tab-pane>
+                </el-tabs>
+            </template>
+        </el-header>
+        <iframe id="show" class="el-main" src="report_member.html" width="100%" height="700px"
+                frameborder="0"></iframe>
+    </el-container>
+
+</div>
+</body>
+<script>
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            activeName: 'first',
+        },
+
+        methods: {
+            handleClick() {
+                if ("first" == this.activeName) {
+                    document.getElementById("show").src = "report_member.html"
+                }
+                if ("second" == this.activeName) {
+                    document.getElementById("show").src = "report_setmeal.html"
+                }
+
+                if ("third" == this.activeName) {
+                    document.getElementById("show").src = "report_business.html"
+                }
+
+                if ("forth" == this.activeName) {
+                    document.getElementById("show").src = ""
+                }
+
+            }
+        }
+    })
+
+
+</script>
+</html>

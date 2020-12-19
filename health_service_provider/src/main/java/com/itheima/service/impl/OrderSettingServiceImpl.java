@@ -1,16 +1,16 @@
 package com.itheima.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.itheima.dao.OrderSettingDao;
-import com.itheima.pojo.OrderSetting;
+import com.itheima.entity.PageResult;
+import com.itheima.pojo.*;
 import com.itheima.service.OrderSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service(interfaceClass = OrderSettingService.class)
 @Transactional
@@ -61,4 +61,35 @@ public class OrderSettingServiceImpl implements OrderSettingService {
             orderSettingDao.add(orderSetting);
         }
     }
+
+    @Override
+    public PageResult pageQuery(Integer currentPage, Integer pageSize, String queryString) {
+        PageHelper.startPage(currentPage,pageSize);
+        Page<List<Map>> page = orderSettingDao.selectByCondition(queryString);
+        return new PageResult(page.getTotal(),page.getResult());
+    }
+
+    @Override
+    public void add(Map<String,Object> map, Integer[] setmealIds) {
+        try {
+            Integer memberId = orderSettingDao.findIdByNumberOrIdCard(map);
+            map.put("member_id", String.valueOf(memberId));
+            for (Integer setmealId : setmealIds) {
+                map.put("setmeal_id",setmealId);
+                try {
+                    orderSettingDao.addOrder(map);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void delete(Integer id) {
+        orderSettingDao.deleteById(id);
+    }
+
+
 }

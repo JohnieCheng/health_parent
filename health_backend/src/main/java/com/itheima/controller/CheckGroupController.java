@@ -79,11 +79,11 @@ public class CheckGroupController {
     public Result delete(Integer id) {
         try {
             checkGroupService.deleteById(id);
+            return new Result(true, MessageConstant.DELETE_CHECKGROUP_SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, MessageConstant.DELETE_CHECKGROUP_FAIL);
         }
-        return new Result(true, MessageConstant.DELETE_CHECKGROUP_SUCCESS);
     }
 
     @RequestMapping("/findAll")

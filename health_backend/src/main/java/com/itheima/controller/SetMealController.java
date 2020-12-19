@@ -146,4 +146,15 @@ public class SetMealController extends HttpServlet {
         }
         return new Result(true, MessageConstant.DELETE_IMG_SUCCESS);
     }
+
+    @RequestMapping("/findAll")
+    public Result findAll() {
+        try {
+            List<SetMeal> setMeal = setMealService.findAll();
+            return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, setMeal);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, MessageConstant.QUERY_SETMEAL_FAIL);
+        }
+    }
 }

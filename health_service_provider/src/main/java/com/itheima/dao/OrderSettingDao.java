@@ -1,10 +1,10 @@
 package com.itheima.dao;
 
+import com.github.pagehelper.Page;
+import com.itheima.pojo.Member;
 import com.itheima.pojo.OrderSetting;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public interface OrderSettingDao {
 
@@ -19,4 +19,13 @@ public interface OrderSettingDao {
     OrderSetting findByOrderDate(Date OrderDate);
 
     void editReservationsByOrderDate(OrderSetting orderSetting);
+
+    Page<List<Map>> selectByCondition(String queryString);
+
+    Integer findIdByNumberOrIdCard(Map<String, Object> map);
+
+    void addOrder(Map<String, Object> map);
+
+
+    void deleteById(Integer id);
 }

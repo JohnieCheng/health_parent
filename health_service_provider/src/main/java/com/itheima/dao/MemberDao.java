@@ -1,5 +1,7 @@
 package com.itheima.dao;
 
+import com.github.pagehelper.Page;
+import com.itheima.pojo.CheckItem;
 import com.itheima.pojo.Member;
 
 public interface MemberDao {
@@ -16,4 +18,15 @@ public interface MemberDao {
 
     Integer findMemberCountAfterDate(String date);
 
+    Page<Member> selectByCondition(String queryString);
+
+    Member findById(Integer id);
+
+
+
+    void deleteById(Integer id);
+
+    long findCountByMemberId(Integer id);
+
+    void edit(Member member);
 }

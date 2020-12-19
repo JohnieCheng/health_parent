@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <style type="text/css">
+        body, html, #allmap {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+    </style>
+    <script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=LzosjRMvqqdvG9yzlwwgVauRVf2ljlN4"></script>
+    <title>根据城市名设置地图中心点</title>
+</head>
+<body>
+<div id="allmap"></div>
+</body>
+</html>
+<!-- 引入组件库 -->
+<script src="../js/vue.js"></script>
+<script src="../plugins/elementui/index.js"></script>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");  // 创建Map实例
+    // map.centerAndZoom("厦门", 13);      // 初始化地图,用城市名设置地图中心点
+    map.enableScrollWheelZoom(true);
+
+    window.onload = findAll;
+
+    function findAll() {
+        $.ajax({
+            //请求资源路径
+            url: "/addressManage/findAll.do",
+            //请求参数
+            //请求方式
+            type: "GET",
+            //数据形式
+            dataType: "json",
+            //请求成功后调用的回调函数
+            success: function (list) {
+                //将响应的数据显示到span标签
+                for (let i = 0; i <= list.length; i++) {
+                    // console.log(list[i]);
+
+                    var point = new BMap.Point(list[i].longitude, list[i].dimension);
+                    map.centerAndZoom(point, 15);
+                    var marker = new BMap.Marker(point);  // 创建标注
+                    map.addOverlay(marker);
+                    var opts = {
+                        position: point,    // 指定文本标注所在的地理位置
+                        offset: new BMap.Size(8, -40)    //设置文本偏移量
+                    }
+                    var label = new BMap.Label(list[i].checkAddress, opts);  // 创建文本标注对象
+                    label.setStyle({
+                        color: "red",
+                        fontSize: "12px",
+                        height: "20px",
+                        lineHeight: "20px",
+                        fontFamily: "微软雅黑"
+                    });
+                    map.addOverlay(label);
+
+                }
+            },
+            //请求失败后调用的回调函数
+            error: function () {
+                alert("请求失败...");
+            }
+        });
+        map.centerAndZoom("厦门", 13);
+    }
+
+</script>

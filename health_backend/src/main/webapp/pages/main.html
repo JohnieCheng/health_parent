@@ -70,9 +70,7 @@
                 </el-menu>
             </el-aside>
             <el-container>
-                <!--<img src="../img/Snipaste_2020-12-16_16-19-13.png" width="90%" height="690px">-->
-                <!--<iframe name="right" class="" src="../img/Snipaste_2020-12-16_18-37-51.png" width="100%" height="690px"-->
-                <iframe name="right" class="el-main" src="user_manager.html" width="100%" height="580px" frameborder="0"></iframe>
+                <iframe name="right" src="../img/Snipaste_2020-12-16_18-37-51.png" width="100%" height="680px"
                         frameborder="0"></iframe>
             </el-container>
         </el-container>
@@ -94,7 +92,14 @@
                     "path": "1",
                     "title": "工作台",
                     "icon": "fa-dashboard",
-                    "children": []
+                    "children": [
+                        {
+                            "path": "/1-1",
+                            "title": "地址管理",
+                            "linkUrl": "addressmanage.html",
+                            "children": []
+                        }
+                    ]
                 },
                 {
                     "path": "2",
@@ -197,31 +202,6 @@
                             "path": "/5-4",
                             "title": "运营数据",
                             "linkUrl": "report_business.html",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "path": "6",     //菜单项所对应的路由路径
-                    "title": "权限管理",     //菜单项名称
-                    "icon": " fa fa-heartbeat",
-                    "children": [//是否有子菜单，若没有，则为[]
-                        {
-                            "path": "/5-1",
-                            "title": "用户管理",
-                            "linkUrl": "user_manager.html",
-                            "children": []
-                        },
-                        {
-                            "path": "/5-2",
-                            "title": "角色管理",
-                            "linkUrl": "role_manager.html",
-                            "children": []
-                        },
-                        {
-                            "path": "/5-3",
-                            "title": "权限管理",
-                            "linkUrl": "permission_manager.html",
                             "children": []
                         }
                     ]

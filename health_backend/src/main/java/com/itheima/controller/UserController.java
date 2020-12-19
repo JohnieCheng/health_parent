@@ -14,7 +14,7 @@ public class UserController {
     @RequestMapping("/getUsername")
     public Result getUsername() {
         org.springframework.security.core.userdetails.User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(user);
+//        System.out.println(user);
         if (user != null) {
             String username = user.getUsername();
             return new  Result(true, MessageConstant.GET_USERNAME_SUCCESS, username);

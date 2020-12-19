@@ -697,7 +697,7 @@
 }
 
 .el-dialog__body {
-    padding: 30px 20px;
+    padding: 0 10px;
     color: #606266;
     font-size: 14px
 }

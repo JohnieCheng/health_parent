@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 页面meta -->
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>传智健康</title>
+    <meta name="description" content="传智健康">
+    <meta name="keywords" content="传智健康">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../plugins/elementui/index.css">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=LzosjRMvqqdvG9yzlwwgVauRVf2ljlN4"></script>
+</head>
+<body class="hold-transition">
+<div id="app">
+
+    <div class="app-container">
+        <div>
+            <div class="filter-container">
+                <el-input placeholder="公司地址" v-model="pagination.queryString" style="width: 200px;"
+                          class="filter-item"></el-input>
+                <el-button @click="findPage()" class="dalfBut">查询</el-button>
+                <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
+            </div>
+            <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
+                <el-table-column type="index" align="center" label="序号"></el-table-column>
+                <el-table-column prop="checkAddress" label="公司地址" align="center"></el-table-column>
+                <el-table-column prop="longitude" label="所在经度" align="center"></el-table-column>
+                <el-table-column prop="dimension" label="所在维度" align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
+                    <template slot-scope="scope">
+                        <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+                        <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="pagination-container">
+                <el-pagination
+                        class="pagiantion"
+                        @current-change="handleCurrentChange"
+                        :current-page="pagination.currentPage"
+                        :page-size="pagination.pageSize"
+                        layout="total, prev, pager, next, jumper"
+                        :total="pagination.total">
+                </el-pagination>
+            </div>
+            <!-- 新增标签弹层 -->
+            <div class="add-form">
+                <el-dialog id="addForm" title="新增地址" :visible.sync="dialogFormVisible" style="width: 105%">
+                    <div>
+                        <iframe id="show" src="address-add.html" width="100%" height="510px"
+                                frameborder="0"></iframe>
+                    </div>
+                </el-dialog>
+            </div>
+
+            <!-- 编辑标签弹层 -->
+            <div class="add-form">
+                <el-dialog title="编辑检查项" :visible.sync="dialogFormVisible4Edit">
+
+                </el-dialog>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<!-- 引入组件库 -->
+<script src="../js/vue.js"></script>
+<script src="../plugins/elementui/index.js"></script>
+<!--<script type="text/javascript" src="../js/jquery.min.js"></script>-->
+<script src="../js/axios-0.18.0.js"></script>
+
+<script>
+    var vue = new Vue({
+        el: '#app',
+        input: '',
+        data: {
+            pagination: {//分页相关模型数据
+                currentPage: 1,//当前页码
+                pageSize: 10,//每页显示的记录数
+                total: 0,//总记录数
+                queryString: null//查询条件
+            },
+            dataList: [],//当前页要展示的分页列表数据
+            dialogFormVisible: false,//增加表单是否可见
+            dialogFormVisible4Edit: false,//编辑表单是否可见
+        },
+        //钩子函数，VUE对象初始化完成后自动执行
+        created() {
+            this.findPage();
+        },
+        methods: {
+            //分页查询
+            findPage() {
+                var param = {
+                    currentPage: this.pagination.currentPage,
+                    pageSize: this.pagination.pageSize,
+                    queryString: this.pagination.queryString
+                };
+                axios.post("/addressManage/findPage.do", param).then((response) => {
+                    this.pagination.total = response.data.total;
+                    console.log(response)
+                    this.dataList = response.data.rows;
+                });
+            },
+            // 弹出添加窗口
+            handleCreate() {
+                this.dialogFormVisible = true;
+            },
+            //切换页码
+            handleCurrentChange(currentPage) {
+                this.pagination.currentPage = currentPage;
+                this.findPage();
+            },
+            // 删除
+            handleDelete(row) {
+                this.$confirm('此操作将永久当前数据，是否继续?', '提示', {
+                    type: 'waring'
+                }).then(() => {
+                    axios.get("/addressManage/delete.do?id=" + row.id).then((response) => {
+                        if (response.data.flag) {
+                            this.$message({
+                                type: 'success',
+                                message: response.data.message
+                            });
+                            this.findPage();
+                        } else {
+                            this.$message.error(response.data.message);
+                        }
+                    }).catch((r) => {
+                        this.showMessage(r);
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '操作已取消'
+                    })
+                })
+            },
+
+        }
+    })
+
+</script>
+</html>
+

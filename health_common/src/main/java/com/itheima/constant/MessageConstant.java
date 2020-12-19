@@ -71,4 +71,8 @@ public class MessageConstant {
     public static final String GET_SETMEAL_LIST_FAIL = "查询套餐列表数据失败";
     public static final String DELETE_ORDER_FAIL = "删除预约失败";
     public static final String DELETE_ORDER_TRUE = "删除预约成功";
+    public static final String ADD_ADDRESS_SUCCESS = "新增地址成功";
+    public static final String ADD_ADDRESS_FAIL = "新增地址失败";
+    public static final String DELETE_ADDRESS_SUCCESS = "删除地址成功";
+    public static final String DELETE_ADDRESS_FAIL = "删除地址失败";
 }

@@ -2,7 +2,12 @@ package com.itheima.service.impl;
 
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.itheima.dao.MemberDao;
+import com.itheima.entity.PageResult;
+import com.itheima.entity.QueryPageBean;
+import com.itheima.pojo.CheckItem;
 import com.itheima.pojo.Member;
 import com.itheima.service.MemberService;
 import com.itheima.utils.MD5Utils;
@@ -42,6 +47,34 @@ public class MemberServiceImpl implements MemberService {
         }
         return list;
 
+    }
+
+    @Override
+    public PageResult pageQuery(QueryPageBean queryPageBean) {
+        Integer currentPage = queryPageBean.getCurrentPage();
+        Integer pageSize = queryPageBean.getPageSize();
+        String queryString = queryPageBean.getQueryString();
+
+        PageHelper.startPage(currentPage,pageSize);
+        Page<Member> page = memberDao.selectByCondition(queryString);
+        long total = page.getTotal();
+        List<Member> rows = page.getResult();
+        return new PageResult(total,rows);
+    }
+
+    @Override
+    public Member findById(Integer id) {
+        return memberDao.findById(id);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        memberDao.deleteById(id);
+    }
+
+    @Override
+    public void edit(Member member) {
+        memberDao.edit(member);
     }
 
 }

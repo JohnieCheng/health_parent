@@ -18,9 +18,19 @@
     <script src="../plugins/vue/vue.js"></script>
     <script src="../plugins/vue/axios-0.18.0.js"></script>
     <script src="../plugins/elementui/index.js"></script>
+    <!-- 引入address样式和js文件 -->
+    <link rel="stylesheet" type="text/css" href="../plugins/mobileSelect/css/mobileSelect.css">
+    <script src="../plugins/mobileSelect/js/mobileSelect.js" type="text/javascript"></script>
     <script>
         var id = getUrlParam("id");
     </script>
+
+    <style>
+        .demo:hover {
+            color: dodgerblue;
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body data-spy="scroll" data-target="#myNavbar" data-offset="150">
 <div id="app" class="app">
@@ -34,8 +44,8 @@
     <div class="contentBox">
         <div class="card">
             <div class="">
-<!--                <img id="pic"  src="../img/default.png" width="100%" height="100%"/>-->
-                <img :src="'http://qkw9ugnl7.hn-bkt.clouddn.com/'+setMeal.img" width="100%" height="100%" />
+                <!--                <img id="pic"  src="../img/default.png" width="100%" height="100%"/>-->
+                <img :src="'http://qkw9ugnl7.hn-bkt.clouddn.com/'+setMeal.img" width="100%" height="100%"/>
             </div>
             <div class="project-text">
                 <h4 class="tit">{{setMeal.name}}</h4>
@@ -90,6 +100,14 @@
                 <div class="input-row">
                     <label>身份证号</label>
                     <input v-model="orderInfo.idCard" type="text" class="input-clear" placeholder="请输入身份证号">
+                </div>
+                <div class="date">
+                    <label>体检地址</label>
+                    <div class="fixWidth" style="float: right">
+                        <div class="demo">
+                            <div id="trigger1">地址选择</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="date">
                     <label>体检日期</label>
@@ -155,6 +173,7 @@
         }
     });
 </script>
+
 <script>
     //日期控件
     var calendar = new datePicker();
@@ -167,6 +186,73 @@
             //var theSelectData = calendar.value;
         },
         'onClose': function () { /*取消时触发事件*/
+        }
+    });
+</script>
+
+<script type="text/javascript">
+
+    window.onload = findAll;
+
+    function findAll() {
+        $.ajax({
+            //请求资源路径
+            url: "/addressManage/findAll.do",
+            //请求参数
+            //请求方式
+            type: "GET",
+            //数据形式
+            dataType: "json",
+            //请求成功后调用的回调函数
+            success: function (list) {
+                //将响应的数据显示到span标签
+                for (let i = 0; i <= list.length; i++) {
+
+                    // console.log(Object.keys(list[i])[0])    ;
+                    addressArr.push(list[i].checkAddress);
+                    // console.log(addressArr);
+                    mobileSelect1.updateWheel(0, addressArr)
+                }
+
+
+            }
+        })
+    }
+
+    var addressArr = ['厦门市湖里区高崎社-1212号楼', '厦门市湖里区361度大厦', '厦门市思明区厦门大学'];
+    /**
+     * 参数说明
+     * @param trigger(必填参数) 触发对象的id/class/tag
+     * @param wheels(必填参数)  数据源,需要显示的数据
+     * @param title 控件标题
+     * @param position 初始化定位
+     * @param callback 选择成功后触发的回调函数，返回indexArr(选中的选项索引)、data(选中的数据)
+     * @param transitionEnd 每一次手势滑动结束后触发的回调函数,返回indexArr(当前选中的选项索引)、data(选中的数据)
+     * @param keyMap 字段名映射
+     */
+
+    /**
+     * 函数说明(实例化之后才可用)
+     * @function setTitle()      参数 string                 设置控件的标题
+     * @function updateWheel()   参数 sliderIndex, data      重新渲染指定的轮子(可用于先实例化，后通过ajax获取数据的场景)
+     * @function updateWheels()  参数 data                   重新渲染所有轮子,仅限级联数据格式使用(可用于先实例化，后通过ajax获取数据的场景)
+     * @function locatePosition() 参数 sliderIndex, posIndex  传入位置数组，重定位轮子的位置
+     * @function show()          参数 无参                   唤起弹窗组件
+     * @function getValue()      参数 无参                   获取组件选择的值
+     */
+
+    var mobileSelect1 = new MobileSelect({
+        trigger: '#trigger1',
+        title: '预约地址选择',
+        wheels: [
+            {data: addressArr}
+        ],
+        position: [1], //初始化定位 打开时默认选中的哪个 如果不填默认为0
+        transitionEnd: function (indexArr, data) {
+            //console.log(data);
+        },
+        callback: function (indexArr, data) {
+            console.log(data);
         }
     });
 </script>

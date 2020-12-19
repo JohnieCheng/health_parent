@@ -1,3 +1,4 @@
+com\itheima\controller\AddressManageController.class
 com\itheima\controller\OrderController.class
 com\itheima\controller\SetMealController.class
 com\itheima\controller\LoginController.class

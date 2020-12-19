@@ -11,4 +11,20 @@
         where r.id = ur.role_id
           and ur.user_id = #{user_Id}
     </select>
+    <select id="findById" parameterType="int" resultType="com.itheima.pojo.Role">
+        select *
+        from t_role
+        where id = #{id}
+    </select>
+    <select id="selectByCondition"
+            parameterType="string" resultType="com.itheima.pojo.User">
+        select * from t_user
+        <if test="value != null and value.length > 0">
+            where fileNumber = #{value} or phoneNumber = #{value} or name = #{value}
+        </if>
+    </select>
+    <select id="findAll" resultType="com.itheima.pojo.User">
+        select *
+        from t_user
+    </select>
 </mapper>

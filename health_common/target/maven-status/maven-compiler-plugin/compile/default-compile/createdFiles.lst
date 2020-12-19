@@ -12,6 +12,7 @@ com\itheima\entity\Result.class
 com\itheima\pojo\CheckGroup.class
 com\itheima\constant\MessageConstant.class
 com\itheima\constant\RedisConstant.class
+com\itheima\pojo\Address.class
 com\itheima\utils\SMSUtils.class
 com\itheima\pojo\Member.class
 com\itheima\pojo\Order.class

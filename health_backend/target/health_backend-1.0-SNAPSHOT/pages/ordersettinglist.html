@@ -235,9 +235,7 @@
         el: '#app',
         data: {
             autoUpload: true,//自动上传
-            imageUrl: null,//模型数据，用于上传图片完成后图片预览
             activeName: 'first',//添加/编辑窗口Tab标签名称
-            countTimes: 1,
             pagination: {//分页相关属性  //pagination.currentPage=1
                 currentPage: 1,
                 pageSize: 10,
@@ -263,7 +261,7 @@
         },
         methods: {// 删除
             handleDelete(row) {
-                alert(row.id);
+                // alert(row.id);
                 this.$confirm("确认取消？", "提示", {type: 'waring'}).then(() => {
                     //点击确定按钮时只需此处代码
                     //alert('用户点击的是确定按钮');
@@ -299,9 +297,10 @@
             },
             // 重置表单
             resetForm() {
+                this.tableData=[];
+                this.dataList=[];
                 this.formData = {};
                 this.setmealIds = [];
-                this.imageUrl = null;
             }, // 弹出添加窗口
             handleCreate() {
                 this.dialogFormVisible = true;
